@@ -12,3 +12,13 @@ output: html_document
                         fig.width = 6, fig.height = 10,
                         cache = FALSE)
 ```
+
+---
+
+# Libraries
+
+```{r}
+library(tidyverse)
+```
+
+---
