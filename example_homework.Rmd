@@ -5,3 +5,10 @@ date: "11/21/2018"
 output: html_document
 ---
 
+```{r global_options, include = FALSE}
+  knitr::opts_chunk$set(fig.path = 'figures/',
+                        warning = FALSE,
+                        message = FALSE,
+                        fig.width = 6, fig.height = 10,
+                        cache = FALSE)
+```
