@@ -37,3 +37,13 @@ raw_data <- read_csv("../data/homicide-data.csv",
 
 ---
 
+# Manipulate raw data
+
+```{r}
+homicide_data <- raw_data %>%
+                 mutate(city_name = paste0(city, ", ", state))
+```
+
+---
+
+
