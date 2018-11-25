@@ -40,9 +40,17 @@ raw_data <- read_csv("../data/homicide-data.csv",
 
 # Manipulate raw data
 
+* add a column with the city and state combined
+* print the first line
+
 ```{r}
 homicide_data <- raw_data %>%
                  mutate(city_name = paste0(city, ", ", state))
+```
+
+```{r, echo = FALSE}
+kable(head(homicide_data %>%
+      select(city, state, city_name), 1))
 ```
 
 ---
