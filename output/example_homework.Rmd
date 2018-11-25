@@ -21,6 +21,7 @@ output:
 ```{r libraries}
 library(tidyverse)
 library(knitr)
+library(broom)
 ```
 
 ---
@@ -85,7 +86,40 @@ kable(head(unsolved , 5))
 
 ---
 
+# Baltimore case study
 
+* create baltimore dataframe
 
+```{r}
+baltimore <- unsolved %>%
+             filter(city == "Baltimore")
+```
 
+* run the prop test
 
+```{r}
+prop_baltimore <- prop.test(x = baltimore$n_unsolved,
+                            n = baltimore$n_total,
+                            conf.level = 0.95)
+```
+
+* output of the `prop.test` function:
+
+```{r, echo = FALSE}
+prop_baltimore
+```
+
+* `tidy` the results
+
+```{r}
+prop_baltimore_tidy <- tidy(prop_baltimore)
+```
+
+* extract the estimate and confidence interval:
+
+```{r}
+kable(prop_baltimore_tidy %>% select(estimate, conf.low, conf.high),
+      digits = 2)
+```
+
+---
