@@ -1,8 +1,9 @@
 ---
 title: "Week 4 Homework Example"
 author: "Nicholas Good"
-date: "11/21/2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r global_options, include = FALSE}
@@ -22,3 +23,17 @@ library(tidyverse)
 ```
 
 ---
+
+# Read homicide data
+
+* use `"../"` because markdown is in the `output` folder
+
+* the `col_types = cols()` prevents warning message
+
+```{r}
+raw_data <- read_csv("../data/homicide-data.csv",
+                     col_types = cols())
+```
+
+---
+
