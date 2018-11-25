@@ -55,4 +55,37 @@ kable(head(homicide_data %>%
 
 ---
 
+# Unsolved homicides
+
+* fix messy data
+* summarise
+* organize
+
+```{r}
+unsolved <- homicide_data %>%
+            filter(!is.na(city)) %>%
+            mutate(disposition = sub("<.*", "", disposition),
+                   disposition = tolower(gsub(" |/",  "_", disposition)),
+                   disposition = factor(disposition)) %>%
+            group_by(city, disposition) %>%
+            summarise(num = n()) %>%
+            spread(disposition, num) %>%
+            mutate(n_total = closed_by_arrest +
+                             closed_without_arrest +
+                             open_no_arrest,
+                   n_unsolved = open_no_arrest + closed_without_arrest) %>%
+            select(city, n_total, n_unsolved)
+```
+
+* check
+
+```{r, echo = FALSE}
+kable(head(unsolved , 5))
+```
+
+---
+
+
+
+
 
