@@ -22,6 +22,7 @@ output:
 library(tidyverse)
 library(knitr)
 library(broom)
+library(scales)
 ```
 
 ---
@@ -68,14 +69,15 @@ unsolved <- homicide_data %>%
             mutate(disposition = sub("<.*", "", disposition),
                    disposition = tolower(gsub(" |/",  "_", disposition)),
                    disposition = factor(disposition)) %>%
-            group_by(city, disposition) %>%
+            group_by(city_name, disposition) %>%
             summarise(num = n()) %>%
+            ungroup() %>%
             spread(disposition, num) %>%
             mutate(n_total = closed_by_arrest +
                              closed_without_arrest +
                              open_no_arrest,
                    n_unsolved = open_no_arrest + closed_without_arrest) %>%
-            select(city, n_total, n_unsolved)
+            select(city_name, n_total, n_unsolved)
 ```
 
 * check
@@ -92,7 +94,7 @@ kable(head(unsolved , 5))
 
 ```{r}
 baltimore <- unsolved %>%
-             filter(city == "Baltimore")
+             filter(city_name == "Baltimore, MD")
 ```
 
 * run the prop test
@@ -103,7 +105,7 @@ prop_baltimore <- prop.test(x = baltimore$n_unsolved,
                             conf.level = 0.95)
 ```
 
-* output of the `prop.test` function:
+* print output of the `prop.test` function:
 
 ```{r, echo = FALSE}
 prop_baltimore
@@ -125,4 +127,34 @@ kable(prop_baltimore_tidy %>%
 
 ---
 
+# Run on all cities
+
+```{r}
+all_cities <- unsolved %>%
+              na.omit() %>%
+              mutate(prop = map2(n_unsolved, n_total, prop.test),
+                     prop_list = map(prop, tidy)) %>%
+              unnest(prop_list, .drop = TRUE)
+```
+
+# Plot
+
+```{r plot, fig.height = 7, fig.width = 4.5}
+all_cities %>% 
+  filter(city_name != 'Tulsa, AL') %>% 
+  ggplot(aes(x = estimate, y = reorder(city_name, estimate))) +
+  geom_point(color = "white") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), 
+                 height = 0,
+                 color = 'white') +
+  theme_dark() +
+  labs(x = 'Percent of homicides that are unsolved',
+       y = '') +
+  scale_x_continuous(labels = percent,
+                     limits = c(0.2, 0.8),
+                     breaks = seq(0.2,0.8,0.1)) +
+  ggtitle('Unsolved homicides by city',
+          subtitle = 'Bars show 95% confidence interval')
+```
+```
 
