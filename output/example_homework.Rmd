@@ -29,7 +29,6 @@ library(scales)
 # Read homicide data
 
 * use `"../"` because markdown is in the `output` folder
-
 * the `col_types = cols()` prevents warning message
 
 ```{r}
@@ -41,7 +40,7 @@ raw_data <- read_csv("../data/homicide-data.csv",
 
 # Manipulate raw data
 
-* add a column with the city and state combined
+* add a column `city_state` with the city and state combined
 * print the first line
 
 ```{r}
@@ -139,6 +138,8 @@ all_cities <- unsolved %>%
 ---
 
 # Plot
+
+* recreate the plot
 
 ```{r plot, fig.height = 7, fig.width = 4.5}
 all_cities %>% 
