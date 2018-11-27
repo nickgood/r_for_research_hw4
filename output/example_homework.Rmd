@@ -123,3 +123,5 @@ kable(prop_baltimore_tidy %>% select(estimate, conf.low, conf.high),
 ```
 
 ---
+
+
