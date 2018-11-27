@@ -118,7 +118,8 @@ prop_baltimore_tidy <- tidy(prop_baltimore)
 * extract the estimate and confidence interval:
 
 ```{r}
-kable(prop_baltimore_tidy %>% select(estimate, conf.low, conf.high),
+kable(prop_baltimore_tidy %>%
+      select(estimate, conf.low, conf.high),
       digits = 2)
 ```
 
