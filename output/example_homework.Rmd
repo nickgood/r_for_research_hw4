@@ -158,7 +158,6 @@ all_cities %>%
   ggtitle('Unsolved homicides by city',
           subtitle = 'Bars show 95% confidence interval')
 ```
-```
 
 ---
 
